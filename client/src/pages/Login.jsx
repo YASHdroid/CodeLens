@@ -41,9 +41,11 @@ function Login() {
         password: formData.password,
       });
 
+      localStorage.setItem("token", response.data.token);
+
       alert(response.data.message);
 
-      navigate("/Home");
+      navigate("/home");
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong.");
     } finally {
