@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-
+import Interview from "./pages/Interview";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -47,6 +47,15 @@ function App() {
           </ProtectedRoute>
         }
       />
+      
+      <Route
+  path="/prep"
+  element={
+    <ProtectedRoute>
+      <Interview />
+    </ProtectedRoute>
+  }
+/>
     </Routes>
   );
 }
