@@ -1,75 +1,90 @@
-function InterviewResult({ result }) {
-  const data = result.interview || result;
-
+function InterviewResult({ interview }) {
   return (
-    <div className="space-y-8">
+    <div className="mt-10 space-y-8">
 
-      {/* Header */}
-
+      {/* Summary */}
       <section className="rounded-2xl border border-[#2A2A2A] bg-[#171717] p-6">
 
         <h2 className="mb-3 text-2xl font-semibold text-white">
-          🎯 Interview Preparation
+          📖 Summary
         </h2>
 
-        <p className="leading-7 text-zinc-300">
-          {data.summary}
+        <p className="leading-8 text-zinc-300">
+          {interview.summary}
         </p>
 
       </section>
 
       {/* Questions */}
 
-      {data.questions.map((item, index) => (
+      <section className="space-y-6">
 
-        <section
-          key={index}
-          className="rounded-2xl border border-[#2A2A2A] bg-[#171717] p-6"
-        >
+        {interview.questions.map((item, index) => (
 
-          <div className="mb-5 flex items-center justify-between">
+          <div
+            key={index}
+            className="rounded-2xl border border-[#2A2A2A] bg-[#171717] p-6"
+          >
 
-            <span className="rounded-full bg-[#6943DE]/20 px-4 py-1 text-sm font-medium text-[#B69BFF]">
-              Question {index + 1}
-            </span>
+            {/* Heading */}
 
-          </div>
+            <div className="mb-5 flex items-center justify-between">
 
-          <h3 className="mb-5 text-xl font-semibold text-white">
-            {item.question}
-          </h3>
+              <h2 className="text-xl font-semibold text-white">
+                🎯 Question {index + 1}
+              </h2>
 
-          <div className="rounded-xl border border-[#303030] bg-[#1E1E1E] p-5">
+            </div>
 
-            <h4 className="mb-3 text-lg font-semibold text-green-400">
-              Answer
-            </h4>
+            {/* Question */}
 
-            <p className="whitespace-pre-wrap leading-8 text-zinc-300">
-              {item.answer}
-            </p>
+            <div className="mb-6">
 
-          </div>
+              <h3 className="mb-2 text-lg font-semibold text-violet-400">
+                Question
+              </h3>
 
-          {item.exampleCode && (
+              <p className="leading-7 text-zinc-300">
+                {item.question}
+              </p>
 
-            <div className="mt-5">
+            </div>
 
-              <h4 className="mb-3 text-lg font-semibold text-violet-300">
-                Example
-              </h4>
+            {/* Answer */}
 
-              <pre className="overflow-x-auto rounded-xl bg-[#101010] p-5 text-sm text-green-400">
-                <code>{item.exampleCode}</code>
+            <div className="mb-6">
+
+              <h3 className="mb-2 text-lg font-semibold text-green-400">
+                Answer
+              </h3>
+
+              <p className="whitespace-pre-wrap leading-7 text-zinc-300">
+                {item.answer}
+              </p>
+
+            </div>
+
+            {/* Example */}
+
+            <div>
+
+              <h3 className="mb-3 text-lg font-semibold text-yellow-400">
+                Example Code
+              </h3>
+
+              <pre className="overflow-x-auto rounded-xl bg-[#0F0F0F] p-5 text-sm text-green-400">
+                <code>
+                  {item.exampleCode}
+                </code>
               </pre>
 
             </div>
 
-          )}
+          </div>
 
-        </section>
+        ))}
 
-      ))}
+      </section>
 
     </div>
   );

@@ -1,13 +1,13 @@
 import { useState, useRef } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import api from "../services/api";
 import InterviewResult from "../components/InterviewResult";
+import api from "../services/api";
 
 function Interview() {
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+  const [interview, setInterview] = useState(null);
 
   const textareaRef = useRef(null);
 
@@ -36,12 +36,13 @@ function Interview() {
         language: "javascript",
       });
 
-      setResult(response.data);
+      setInterview(response.data);
 
       setCode("");
 
       if (textareaRef.current) {
         textareaRef.current.style.height = "24px";
+        textareaRef.current.focus();
       }
     } catch (err) {
       console.error(err);
@@ -58,11 +59,15 @@ function Interview() {
       <div className="flex flex-1 flex-col">
         <Navbar />
 
-        <main className="flex flex-1 flex-col">
-          <div className="flex-1 overflow-y-auto">
-            {!result ? (
+       <main className="flex flex-1 flex-col overflow-hidden">
+
+          {/* Scrollable Area */}
+         <div className="flex-1 overflow-y-auto min-h-0">
+
+            {!interview ? (
               <div className="flex h-full items-center justify-center px-8">
                 <div className="w-full max-w-2xl text-center">
+
                   <h1 className="text-5xl font-bold">
                     Interview Preparation
                   </h1>
@@ -71,17 +76,22 @@ function Interview() {
                     Paste your code and generate AI interview questions with
                     detailed answers.
                   </p>
+
                 </div>
               </div>
             ) : (
               <div className="mx-auto w-full max-w-5xl px-8 py-10">
-                <InterviewResult result={result} />
+                <InterviewResult interview={interview} />
               </div>
             )}
+
           </div>
 
+          {/* Fixed Bottom Input */}
           <div className="border-t border-[#2A2A2A] bg-[#0A0A0A] px-8 py-6">
+
             <div className="mx-auto flex max-w-4xl items-end gap-3 rounded-[28px] border border-[#3A3A3A] bg-[#2F2F2F] px-5 py-3">
+
               <textarea
                 ref={textareaRef}
                 rows={1}
@@ -114,9 +124,13 @@ function Interview() {
                   </svg>
                 )}
               </button>
+
             </div>
+
           </div>
+
         </main>
+
       </div>
     </div>
   );
