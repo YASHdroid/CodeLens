@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import Interview from "./pages/Interview";
+
 import Home from "./pages/Home";
+import Interview from "./pages/Interview";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
@@ -11,7 +11,8 @@ import PublicRoute from "./components/PublicRoute";
 function App() {
   return (
     <Routes>
-     
+      {/* Public Routes */}
+
       <Route
         path="/"
         element={
@@ -40,6 +41,7 @@ function App() {
       />
 
       {/* Protected Routes */}
+
       <Route
         path="/home"
         element={
@@ -48,15 +50,15 @@ function App() {
           </ProtectedRoute>
         }
       />
-      
+
       <Route
-  path="/prep"
-  element={
-    <ProtectedRoute>
-      <Interview />
-    </ProtectedRoute>
-  }
-/>
+        path="/prep"
+        element={
+          <ProtectedRoute>
+            <Interview />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

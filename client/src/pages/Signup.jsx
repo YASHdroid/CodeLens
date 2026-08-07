@@ -61,7 +61,7 @@ function Signup() {
         password: formData.password,
       });
 
-      alert(response.data.message);
+      
 
       navigate("/Home");
     } catch (err) {

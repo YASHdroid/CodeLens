@@ -43,8 +43,7 @@ function Login() {
 
       localStorage.setItem("token", response.data.token);
 
-      alert(response.data.message);
-
+    
       navigate("/home");
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong.");

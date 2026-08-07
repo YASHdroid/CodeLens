@@ -5,12 +5,13 @@ const reviewSchema = new mongoose.Schema(
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            required: true
+            required: true,
         },
 
         title: {
             type: String,
-            required: true
+            required: true,
+            trim : true,
         },
 
         language: {

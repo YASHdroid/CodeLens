@@ -5,11 +5,17 @@ import ReviewResult from "../components/ReviewResult";
 import api from "../services/api";
 
 function Home() {
+  const [collapsed, setCollapsed] = useState(false);
+
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [review, setReview] = useState(null);
 
   const textareaRef = useRef(null);
+
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
 
   const handleReview = async () => {
     if (!code.trim()) {
@@ -25,9 +31,14 @@ function Home() {
         language: "javascript",
       });
 
-      setReview(response.data.review);
+      // AI review object save
+      setReview(response.data.review.review);
+
       setCode("");
-textareaRef.current.style.height = "24px";
+
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "24px";
+      }
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.error || "Something went wrong.");
@@ -36,30 +47,44 @@ textareaRef.current.style.height = "24px";
     }
   };
 
+  const openReview = async (id) => {
+    try {
+      const response = await api.get(`/review/${id}`);
+
+      // History se bhi AI review object
+      setReview(response.data.review);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load review");
+    }
+  };
+
   const handleChange = (e) => {
     setCode(e.target.value);
 
     const el = textareaRef.current;
+
+    if (!el) return;
+
     el.style.height = "auto";
     el.style.height = Math.min(el.scrollHeight, 300) + "px";
   };
 
   return (
-    <div className="flex h-screen bg-[#0A0A0A] text-white overflow-hidden">
-      <Sidebar />
+    <div className="flex h-screen bg-[#0A0A0A] text-white">
+      <Sidebar
+        collapsed={collapsed}
+        toggleSidebar={toggleSidebar}
+        onSelectReview={openReview}
+      />
 
       <div className="flex flex-1 flex-col">
         <Navbar />
 
         <main className="flex flex-1 flex-col h-0">
-
-          {/* Scrollable Review Area */}
-
-         <div className="flex-1 overflow-y-auto px-8 py-10 min-h-0">
-
+          <div className="flex-1 overflow-y-auto px-8 py-10 min-h-0">
             <div className="mx-auto w-full max-w-4xl">
-
-              {!review && (
+              {!review ? (
                 <div className="mt-28 text-center">
                   <h1 className="text-4xl font-bold">
                     Ready to review your code
@@ -69,27 +94,21 @@ textareaRef.current.style.height = "24px";
                     Paste your code and get instant AI-powered feedback.
                   </p>
                 </div>
-              )}
-
-              {review && (
+              ) : (
                 <ReviewResult review={review} />
               )}
-
             </div>
-
           </div>
-            <div className="border-t border-[#2A2A2A] bg-[#0A0A0A] px-8 py-5 shrink-0">
 
+          <div className="shrink-0 border-t border-[#2A2A2A] bg-[#0A0A0A] px-8 py-5">
             <div className="mx-auto w-full max-w-4xl">
-
               <div className="flex items-end gap-3 rounded-[28px] border border-[#3A3A3A] bg-[#2F2F2F] px-4 py-3 shadow-lg">
-
                 <textarea
                   ref={textareaRef}
+                  rows={1}
                   value={code}
                   onChange={handleChange}
                   placeholder="Paste your code..."
-                  rows={1}
                   className="max-h-[300px] min-h-[24px] flex-1 resize-none overflow-y-auto bg-transparent py-1.5 text-[15px] leading-relaxed text-white outline-none placeholder:text-zinc-500"
                 />
 
@@ -116,17 +135,11 @@ textareaRef.current.style.height = "24px";
                     </svg>
                   )}
                 </button>
-
               </div>
-
             </div>
-
           </div>
-
         </main>
-
       </div>
-
     </div>
   );
 }
