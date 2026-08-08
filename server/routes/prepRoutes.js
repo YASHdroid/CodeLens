@@ -1,9 +1,16 @@
 const express = require("express");
+
 const prepController = require("../controllers/prepController");
 const authMiddleware = require("../middleware/authMiddleware");
+
 const router = express.Router();
 
-router.post("/" , authMiddleware , prepController.generateInterview);
+router.post(
+  "/",
+  authMiddleware,
+  prepController.generateInterview
+);
+
 router.get(
   "/history",
   authMiddleware,
@@ -21,4 +28,5 @@ router.delete(
   authMiddleware,
   prepController.deleteInterview
 );
+
 module.exports = router;
